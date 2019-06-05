@@ -46,9 +46,7 @@ class Ball(LiveItem):
     def onXBounce(self):
         self.speed[0] *= -1
 
-    def onYBounce(self, absolute = False):
-        if absolute:
-            self.speed[1] = abs(self.speed[1])
+    def onYBounce(self):
         self.speed[1] *= -1
 
     def run(self):
