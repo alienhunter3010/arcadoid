@@ -8,8 +8,8 @@ class Vaus(LiveItem):
         super().__init__('vaus-static.png', position=(400, 550), speed=(12, 0), bounds=bounds)
 
     def bounceEffect(self, ball):
-        ball.onXBounce()
-        
+        ball.onYBounce()
+
     def events(self, pressed):
         if self.freeze:
             return
