@@ -1,5 +1,7 @@
 import pygame
+import time
 from etc.setup import Setup
+from game.arena import Arena
 
 
 class Arcadoid:
@@ -11,6 +13,7 @@ class Arcadoid:
         pygame.display.set_icon(pygame.image.load(Setup.images + 'icon.png' ))
         self.screen = pygame.display.set_mode(screen_dim, pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
+        self.scene = Arena(self.screen)
 
     def events(self, pressed_keys):
         filtered_events = []
@@ -36,6 +39,10 @@ class Arcadoid:
         while True:
             pressed_keys = pygame.key.get_pressed()
             filtered_events = self.events(pressed_keys)
+
+            self.scene.ProcessInput(filtered_events, pressed_keys)
+            self.scene.Update()
+            self.scene.Render(self.screen)
 
             pygame.display.flip()
             self.clock.tick(self.fps)
