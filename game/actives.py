@@ -7,8 +7,26 @@ class Vaus(LiveItem):
     def __init__(self, bounds=(0,)):
         super().__init__('vaus-static.png', position=(400, 550), speed=(12, 0), bounds=bounds)
 
+    def bounce_here(self, position, shape):
+        return shape.collidepoint((position[0], shape.y + 2))
+
     def bounceEffect(self, ball):
-        ball.onYBounce()
+        if self.bounce_here(ball.position,
+                            pygame.Rect(self.position, (10, self.image.get_height()))):
+            ball.speed = list(ball.ONO)
+        elif self.bounce_here(ball.position,
+                              pygame.Rect((self.position[0] + 10, self.position[1]), (10, self.image.get_height()))):
+            ball.speed = list(ball.NNO)
+        elif self.bounce_here(ball.position,
+                              pygame.Rect((self.position[0] + self.image.get_width() - 10, self.position[1]),
+                                          (10, self.image.get_height()))):
+            ball.speed = list(ball.ENE)
+        elif self.bounce_here(ball.position,
+                              pygame.Rect((self.position[0] + self.image.get_width() - 20, self.position[1]),
+                                          (10, self.image.get_height()))):
+            ball.speed = list(ball.NNE)
+        else:
+            ball.onYBounce()
 
     def events(self, pressed):
         if self.freeze:
