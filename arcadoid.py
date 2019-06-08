@@ -7,6 +7,7 @@ from game.arena import Arena
 class Arcadoid:
 
     def __init__(self, fps, screen_dim=(800, 600)):
+        self.pause_mode = False
         self.fps = fps
         pygame.init()
         pygame.display.set_caption('Arcadoid')
@@ -28,6 +29,8 @@ class Arcadoid:
                     quit_attempt = True
                 elif event.key == pygame.K_F4 and alt_pressed:
                     quit_attempt = True
+                elif event.key == pygame.K_p:
+                    self.pause_mode = not self.pause_mode
 
             if quit_attempt:
                 exit(0)
@@ -39,6 +42,10 @@ class Arcadoid:
         while True:
             pressed_keys = pygame.key.get_pressed()
             filtered_events = self.events(pressed_keys)
+
+            if self.pause_mode:
+                time.sleep(1)
+                continue
 
             self.scene.ProcessInput(filtered_events, pressed_keys)
             self.scene.Update()

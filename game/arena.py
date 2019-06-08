@@ -1,12 +1,16 @@
 import pygame
 from game.actives import Vaus, Ball
+from game.background import Fence
 from game.bricks import Brick, BricksFactory
 from shapely.geometry import LineString
+from game.text import Write
 
 
 class Arena:
-    def __init__(self, chart):
-        self.chart = chart
+    def __init__(self, screen):
+        self.score = 0
+        self.chart = screen
+        self.fence = Fence('voidframe.tmx')
         self.player = Vaus(bounds=(20,)).moveOn(self.chart)
         self.ball = Ball(bounds=(20,)).moveOn(self.chart)
         self.ball_origin = self.ball.get_shape().center
@@ -15,6 +19,13 @@ class Arena:
         self.bricks = []
         self.wall(factory)
         self.wall(factory, 160)
+
+        self.scoreBox = Write(). \
+            withFont("kenpixel", 16). \
+            withAlign((Write.RIGHT, Write.TOP)). \
+            withMargin((40, -20)). \
+            withColor((250, 250, 250)). \
+            withText(self.score)
 
     def wall(self, factory, start=64):
         for i in range(0, 20):
@@ -33,6 +44,7 @@ class Arena:
 
     def Render(self, screen):
         screen.fill((20, 20, 20))
+        self.fence.render(screen)
         self.player.output(screen)
         self.ball.output(screen)
 
@@ -47,8 +59,11 @@ class Arena:
                 continue
             screen.blit(brick.image, brick.get_position())
 
+        self.scoreBox.withText(self.score).onScreen(screen).render()
+
         for brick in drop:
             self.bricks.remove(brick)
+            self.score += 100
         self.ball_origin = (shape_ball.center[0] - self.ball.speed[0], shape_ball.center[1] - self.ball.speed[1])
 
     def Update(self):
