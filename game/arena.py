@@ -4,6 +4,7 @@ from game.background import Fence
 from game.bricks import Brick, BricksFactory
 from shapely.geometry import LineString
 from game.text import Write
+from game.sounds import Effects
 
 
 class Arena:
@@ -27,6 +28,13 @@ class Arena:
             withColor((250, 250, 250)). \
             withText(self.score)
 
+        self.effects = Effects(). \
+            withSound('bounce', 'UI04.ogg'). \
+            withSound('racket', 'UI01.ogg'). \
+            withSound('break', 'Damage01.ogg'). \
+            withSound('lost', 'Explosion3.ogg'). \
+            withVolume(1)
+
     def wall(self, factory, start=64):
         for i in range(0, 20):
             self.bricks.append(Brick(factory.getBrick(factory.BLUE), position=(64+i*32, start)))
@@ -48,26 +56,30 @@ class Arena:
         self.player.output(screen)
         self.ball.output(screen)
 
+        for brick in self.bricks:
+            screen.blit(brick.image, brick.get_position())
+
+        self.scoreBox.withText(self.score).onScreen(screen).render()
+
+    def Update(self):
+        if self.ball.run():
+            self.effects.playSound('bounce')
+
         shape_ball = self.emboss(self.ball.get_shape())
         if self.player.get_rect().colliderect(shape_ball):
             self.player.bounceEffect(self.ball)
+            self.effects.playSound('racket')
 
         drop = []
         for brick in self.bricks:
             if self.bounce(shape_ball, brick.shape):
                 drop.append(brick)
-                continue
-            screen.blit(brick.image, brick.get_position())
-
-        self.scoreBox.withText(self.score).onScreen(screen).render()
 
         for brick in drop:
             self.bricks.remove(brick)
             self.score += 100
+            self.effects.playSound('break')
         self.ball_origin = (shape_ball.center[0] - self.ball.speed[0], shape_ball.center[1] - self.ball.speed[1])
-
-    def Update(self):
-        self.ball.run()
 
     def emboss(self, rect):
         return pygame.Rect((rect.left -1, rect.top -1), (rect.width +2, rect.height +2))

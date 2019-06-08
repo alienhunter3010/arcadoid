@@ -1,7 +1,9 @@
 import pygame
 import time
+import os
 from etc.setup import Setup
 from game.arena import Arena
+from game.sounds import Effects
 
 
 class Arcadoid:
@@ -9,7 +11,13 @@ class Arcadoid:
     def __init__(self, fps, screen_dim=(800, 600)):
         self.pause_mode = False
         self.fps = fps
+
+        Effects.init(os.path.split(os.path.abspath(__file__))[0])
         pygame.init()
+        if pygame.mixer and not pygame.mixer.get_init():
+            print('Warning, no sound')
+            pygame.mixer = None
+
         pygame.display.set_caption('Arcadoid')
         pygame.display.set_icon(pygame.image.load(Setup.images + 'icon.png' ))
         self.screen = pygame.display.set_mode(screen_dim, pygame.SRCALPHA)

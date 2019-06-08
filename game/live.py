@@ -20,8 +20,8 @@ class Movable:
 
     def move(self, dx, dy):
         if abs(dx) + abs(dy) == 0:
-            return
-        self.update_position((dx, dy))
+            return False
+        return self.update_position((dx, dy))
 
 
 class LiveItem(Movable, Sprite):
@@ -50,20 +50,26 @@ class LiveItem(Movable, Sprite):
         pass
 
     def update_position(self, delta=(0, 0)):
+        bounce = False
         if self.position[0] + delta[0] < self.bounds[0]:
             self.position[0] = self.bounds[0]
             self.onXBounce()
+            bounce = True
         elif self.position[0] + delta[0] > self.bounds[2]:
             self.position[0] = self.bounds[2]
             self.onXBounce()
+            bounce = True
         else:
             self.position[0] = self.position[0] + delta[0]
 
         if self.position[1] + delta[1] < self.bounds[1]:
             self.position[1] = self.bounds[1]
             self.onYBounce()
+            bounce = True
         elif self.position[1] + delta[1] > self.bounds[3]:
             self.position[1] = self.bounds[3]
             self.onYBounce()
+            bounce = True
         else:
             self.position[1] = self.position[1] + delta[1]
+        return bounce

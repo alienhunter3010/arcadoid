@@ -70,7 +70,7 @@ class Ball(LiveItem):
     def run(self):
         dx = self.speed[0]
         dy = self.speed[1]
-        self.move(dx, dy)
+        return self.move(dx, dy)
 
     def output(self, screen):
         self.render(screen, Sprite.update(self))
