@@ -22,3 +22,7 @@ but you need to add it on your `.gitignore` file.
 ```bash
 echo my_customized_venv_path >> .gitignore
 ```
+
+## IDE
+
+[PyCharm CE](https://www.jetbrains.com/pycharm/) from JetBrains is the recommended IDE.
