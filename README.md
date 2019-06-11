@@ -14,6 +14,10 @@ source arcadenv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+##### Recommended
+
+Install [Tiled](https://www.mapeditor.org/) editor
+
 ##### Note
 
 You are free to change the virtual environment name (`arcadenv`, in the example)
