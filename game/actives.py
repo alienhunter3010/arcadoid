@@ -4,8 +4,8 @@ from game.sprite import Sprite
 
 
 class Vaus(LiveItem):
-    def __init__(self, bounds=(0,)):
-        super().__init__('vaus-static.png', position=(400, 550), speed=(12, 0), bounds=bounds)
+    def __init__(self, bounds=(20, ), position=(400, 550)):
+        super().__init__('vaus-static.png', position=position, speed=(12, 0), bounds=bounds)
 
     def bounce_here(self, position, shape):
         return shape.collidepoint((position[0], shape.y + 2))
@@ -55,8 +55,8 @@ class Ball(LiveItem):
     SSO = (-2, 4)
     OSO = (-4, 2)
 
-    def __init__(self, bounds=(0,)):
-        super().__init__('ball.png', position=(414, 446), speed=[2, -4], bounds=bounds)
+    def __init__(self, bounds=(20, 20, -20), position=(414, 446), speed=(2, -4)):
+        super().__init__('ball.png', position=position, speed=speed, bounds=bounds)
 
     def get_shape(self):
         return pygame.Rect(self.position, (self.image.get_width(), self.image.get_height()))

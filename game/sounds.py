@@ -10,9 +10,9 @@ class Effects:
     @staticmethod
     def init(abspath):
         if pygame.get_sdl_version()[0] == 2:
-            pygame.mixer.pre_init(22100, -16, 2, 4096)
+            pygame.mixer.pre_init(22100, -16, 2, 16)
         else:
-            pygame.mixer.init(22100, -16, 2, 4096)
+            pygame.mixer.init(22100, -16, 2, 16)
         Effects.abspath = abspath
 
     def __init__(self):

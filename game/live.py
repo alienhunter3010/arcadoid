@@ -6,7 +6,7 @@ class Movable:
 
     def __init__(self, position=(30, 30), speed=3):
         self.position = list(position)
-        self.speed = speed
+        self.speed = list(speed)
 
     def moveOn(self, chart):
         self.chart = chart
@@ -33,10 +33,23 @@ class LiveItem(Movable, Sprite):
             (bounds[0], bounds[1], bounds[2] - self.image.get_width(), bounds[3] - self.image.get_height())
 
     def moveOn(self, chart):
+        # css like
         if len(self.bounds) == 1:
             self.bounds = (self.bounds[0], self.bounds[0],
                            chart.get_width() - self.bounds[0] - self.image.get_width(),
                            chart.get_height() - self.bounds[0] - self.image.get_height())
+        elif len(self.bounds) == 2:
+            self.bounds = (self.bounds[0], self.bounds[1],
+                           chart.get_width() - self.bounds[0] - self.image.get_width(),
+                           chart.get_height() - self.bounds[1] - self.image.get_height())
+        elif len(self.bounds) == 3:
+            self.bounds = (self.bounds[0], self.bounds[1],
+                           chart.get_width() - self.bounds[0] - self.image.get_width(),
+                           chart.get_height() - self.bounds[2] - self.image.get_height())
+        else:
+            self.bounds = (self.bounds[0], self.bounds[1],
+                           chart.get_width() - self.bounds[2] - self.image.get_width(),
+                           chart.get_height() - self.bounds[3] - self.image.get_height())
 
         return Movable.moveOn(self, chart)
 
